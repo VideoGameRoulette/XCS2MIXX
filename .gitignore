@@ -1,55 +1,88 @@
-# Prerequisites
-*.d
+# Ignore build results
+bin/
+obj/
+[Bb]uild/
+[Ll]og/
+[Ll]ogs/
+*.log
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+# Ignore user-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
 
-# Linker output
-*.ilk
-*.map
-*.exp
+# Ignore Visual Studio working folder
+.vs/
 
-# Precompiled Headers
-*.gch
-*.pch
+# Ignore Rider IDE files (optional if using JetBrains Rider)
+.idea/
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
 
-# Shared objects (inc. Windows DLLs)
+# Ignore NuGet packages
+*.nupkg
+# Uncomment if you want to ignore downloaded packages
+# packages/
+# *.snupkg
+
+# Ignore test results
+*.trx
+TestResults/
+*.coverage
+*.coveragexml
+*.vsp
+*.vspx
+*.sap
+*.scc
+
+# Ignore publish outputs
+*.publish.xml
+*.pubxml
+*.pfx
+*.key
+
+# Ignore cache and temporary files
+_ReSharper*/
+*~ 
+*.tmp
+*.bak
+*.swp
+*.sln.ide
+*.orig
+
+# Ignore project-specific output
+*.dbmdl
+*.dbschema
+*.mdf
+*.ldf
+*.sql
+
+# Ignore global JetBrains settings (optional)
+.idea/
+
+# Uncomment if you use Windows Forms Designer auto-gen
+*.Designer.cs
+
+# Ignore local secrets/settings
+secrets.json
+
+# Optional: ignore dotenv-style env files
+.env
+.env.*
+
+# Optional: ignore compiled assemblies
 *.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
 *.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
 *.pdb
+*.mdb
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+# Optional: ignore Visual Studio Code settings
+.vscode/
 
-# debug information files
-*.dwo
+# Ignore node modules if you use frontend tech
+node_modules/
