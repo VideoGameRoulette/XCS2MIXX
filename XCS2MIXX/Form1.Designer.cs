@@ -43,6 +43,7 @@
             cmbMode = new System.Windows.Forms.ComboBox();
             cmbTemplates = new System.Windows.Forms.ComboBox();
             genMixx = new System.Windows.Forms.CheckBox();
+            helperText = new System.Windows.Forms.Label();
             menuStrip1 = new System.Windows.Forms.MenuStrip();
             settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             setXConv = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,7 +62,7 @@
             // 
             tableLayoutPanel2.SetColumnSpan(btnRun, 3);
             btnRun.Dock = System.Windows.Forms.DockStyle.Fill;
-            btnRun.Location = new System.Drawing.Point(3, 109);
+            btnRun.Location = new System.Drawing.Point(3, 139);
             btnRun.Name = "btnRun";
             btnRun.Size = new System.Drawing.Size(478, 24);
             btnRun.TabIndex = 17;
@@ -72,7 +73,7 @@
             // 
             tableLayoutPanel2.SetColumnSpan(txtLog, 3);
             txtLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            txtLog.Location = new System.Drawing.Point(4, 139);
+            txtLog.Location = new System.Drawing.Point(4, 169);
             txtLog.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtLog.Multiline = true;
             txtLog.Name = "txtLog";
@@ -111,7 +112,7 @@
             groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             groupBox1.Location = new System.Drawing.Point(3, 3);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new System.Drawing.Size(478, 100);
+            groupBox1.Size = new System.Drawing.Size(478, 130);
             groupBox1.TabIndex = 13;
             groupBox1.TabStop = false;
             groupBox1.Text = "Options";
@@ -132,14 +133,16 @@
             tableLayoutPanel3.Controls.Add(cmbMode, 2, 1);
             tableLayoutPanel3.Controls.Add(cmbTemplates, 3, 1);
             tableLayoutPanel3.Controls.Add(genMixx, 0, 2);
+            tableLayoutPanel3.Controls.Add(helperText, 0, 3);
             tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             tableLayoutPanel3.Location = new System.Drawing.Point(3, 19);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
-            tableLayoutPanel3.RowCount = 3;
+            tableLayoutPanel3.RowCount = 4;
             tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            tableLayoutPanel3.Size = new System.Drawing.Size(472, 78);
+            tableLayoutPanel3.Size = new System.Drawing.Size(472, 108);
             tableLayoutPanel3.TabIndex = 0;
             // 
             // label1
@@ -225,6 +228,16 @@
             genMixx.TabIndex = 8;
             genMixx.Text = "Generate Mixx";
             genMixx.UseVisualStyleBackColor = true;
+            // 
+            // helperText
+            // 
+            helperText.AutoSize = true;
+            tableLayoutPanel3.SetColumnSpan(helperText, 4);
+            helperText.Dock = System.Windows.Forms.DockStyle.Fill;
+            helperText.Location = new System.Drawing.Point(3, 80);
+            helperText.Name = "helperText";
+            helperText.Size = new System.Drawing.Size(466, 28);
+            helperText.TabIndex = 9;
             // 
             // menuStrip1
             // 
@@ -332,6 +345,7 @@
         private System.Windows.Forms.ToolStripMenuItem addInputExt;
         private System.Windows.Forms.ToolStripMenuItem addOutputExt;
         private System.Windows.Forms.ToolStripMenuItem showConversionSettingsToolStripMenuItem;
+        private System.Windows.Forms.Label helperText;
     }
 }
 
