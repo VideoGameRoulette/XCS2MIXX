@@ -408,11 +408,17 @@ namespace XCS2MIXX
                 int mode = int.TryParse(cmbMode.SelectedItem?.ToString(), out var m) ? m : 0;
                 var (inExt, outExt) = GetExtForMode(mode);
                 txtLog.AppendText($"[DEBUG] Converter: {_converterPath}");
+                txtLog.AppendText("\n");
                 txtLog.AppendText($"[DEBUG] Root Dir:  {_rootDir}");
+                txtLog.AppendText("\n");
                 txtLog.AppendText($"[DEBUG] Template:  {templ} -> {path}");
+                txtLog.AppendText("\n");
                 txtLog.AppendText($"[DEBUG] Mode:       {mode}");
+                txtLog.AppendText("\n");
                 txtLog.AppendText($"[DEBUG] Exts:       {inExt} -> {outExt}");
+                txtLog.AppendText("\n");
                 txtLog.AppendText($"[DEBUG] Mixx:       {genMixx.Checked}");
+                txtLog.AppendText("\n");
             }
         }
     }
