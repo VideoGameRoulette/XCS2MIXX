@@ -11,5 +11,21 @@
     <SelfContained>true</SelfContained>
     <!-- Disable trimming for WinForms since it’s not supported -->
     <PublishTrimmed>false</PublishTrimmed>
+    <FileVersion>1.0.1</FileVersion>
+    <RepositoryUrl>https://github.com/VideoGameRoulette/XCS2MIXX</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Copyright>©2025 Christopher Couture</Copyright>
+    <Description>XCS2MIXX is a Windows Forms utility that automates the conversion of .xcs files to .pgmx and .mixx formats using the external XConverter.exe tool. It allows you to manage multiple template configurations, group files by folder, and produce both CSV and MIX file outputs in one click.</Description>
+    <PackageIcon>XConvert.png</PackageIcon>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\XConvert.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 </Project>

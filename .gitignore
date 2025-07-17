@@ -65,9 +65,6 @@ _ReSharper*/
 # Ignore global JetBrains settings (optional)
 .idea/
 
-# Uncomment if you use Windows Forms Designer auto-gen
-*.Designer.cs
-
 # Ignore local secrets/settings
 secrets.json
 
