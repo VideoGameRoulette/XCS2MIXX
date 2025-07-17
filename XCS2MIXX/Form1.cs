@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 
@@ -23,9 +24,7 @@ namespace XCS2MIXX
         }
 
         private Settings _settings = new();
-        private static readonly string SettingsFilePath =
-            Path.Combine(Application.StartupPath, "settings.json");
-
+        private static readonly string SettingsFilePath = Path.Combine(Application.StartupPath, "settings.json");
         private readonly Dictionary<string, string> _toolTemplates = new();
         private string _converterPath = "";
         private string _rootDir = "";
@@ -35,6 +34,7 @@ namespace XCS2MIXX
             InitializeComponent();
             LoadSettings();
             InitializeUIFromSettings();
+            ValidateRequiredSettings();
         }
 
         private void LoadSettings()
@@ -79,7 +79,7 @@ namespace XCS2MIXX
         private void InitializeUIFromSettings()
         {
             genMixx.Checked = _settings.GenerateMixx;
-
+            _toolTemplates.Clear();
             foreach (var kv in _settings.ToolTemplates)
                 _toolTemplates[kv.Key] = kv.Value;
 
@@ -110,211 +110,243 @@ namespace XCS2MIXX
                 cmbTemplates.SelectedIndex = 0;
         }
 
-        private void setXConv_Click(object sender, EventArgs e)
+        private void setXConverterPath() =>
+            SetPath(ref _converterPath, "XConverter.exe", "[DEBUG] Converter: ");
+
+        private void setXConv_Click(object sender, EventArgs e) => setXConverterPath();
+
+        private void setProgramPath() =>
+            SetPath(ref _rootDir, string.Empty, "[DEBUG] Programs Folder: ", folder: true);
+
+        private void setPrograms_Click(object sender, EventArgs e) => setProgramPath();
+
+        private void SetPath(ref string target, string filter, string logPrefix, bool folder = false)
         {
-            using var fd = new OpenFileDialog { Filter = "XConverter.exe|XConverter.exe" };
-            if (fd.ShowDialog() == DialogResult.OK)
+            if (folder)
             {
-                _converterPath = fd.FileName;
-                SaveSettings();
-                MessageBox.Show($"XConverter path set:\n{_converterPath}", "Set Path", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                using var bd = new FolderBrowserDialog();
+                if (bd.ShowDialog() != DialogResult.OK) return;
+                target = bd.SelectedPath;
             }
+            else
+            {
+                using var fd = new OpenFileDialog { Filter = filter + "|" + filter };
+                if (fd.ShowDialog() != DialogResult.OK) return;
+                target = fd.FileName;
+            }
+            SaveSettings();
+            txtLog.Clear();
+            txtLog.AppendText($"{logPrefix}{target}\r\n");
         }
 
-        private void setPrograms_Click(object sender, EventArgs e)
-        {
-            using var bd = new FolderBrowserDialog();
-            if (bd.ShowDialog() == DialogResult.OK)
-            {
-                _rootDir = bd.SelectedPath;
-                SaveSettings();
-                MessageBox.Show($"Root folder set:\n{_rootDir}", "Set Root Folder", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
+        private void addTemplate_Click(object sender, EventArgs e) // renamed to match event handler
 
-        private void addTemplate_Click(object sender, EventArgs e)
         {
             using var ofd = new OpenFileDialog
             {
                 Filter = "Tool template (*.tlgx)|*.tlgx|All files|*.*",
                 Title = "Select Tool Template"
             };
+            if (ofd.ShowDialog() != DialogResult.OK) return;
 
-            if (ofd.ShowDialog() != DialogResult.OK)
-                return;
-
-            string selectedPath = ofd.FileName;
-
-            string label = Interaction.InputBox(
-                "Enter a label name for this tooling template:",
-                "Template Label",
-                Path.GetFileNameWithoutExtension(selectedPath)
-            ).Trim();
-
-            if (string.IsNullOrEmpty(label) || !File.Exists(selectedPath))
+            var selected = ofd.FileName;
+            var label = Interaction.InputBox("Enter a label:", "Template Label",
+                                            Path.GetFileNameWithoutExtension(selected)).Trim();
+            if (string.IsNullOrWhiteSpace(label) || !File.Exists(selected))
             {
-                MessageBox.Show("Enter a name and pick a valid .tlgx file.",
-                                "Invalid input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Invalid label or file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            _toolTemplates[label] = selectedPath;
+            _toolTemplates[label] = selected;
             RefreshTemplateList();
             SaveSettings();
+            txtLog.Clear();
+            txtLog.AppendText($"[DEBUG] Template: {label} => {selected}\r\n");
         }
+
+        private void addInputExt_Click(object sender, EventArgs e)
+        {
+            var ext = Interaction.InputBox("New input extension (e.g. .xcs):", "Add Input Ext", ".xcs").Trim();
+            if (string.IsNullOrEmpty(ext)) return;
+            if (!ext.StartsWith(".")) ext = "." + ext;
+            if (!_settings.InputExtensions.Contains(ext))
+            {
+                _settings.InputExtensions.Add(ext);
+                cmbInputExt.Items.Add(ext);
+                cmbInputExt.SelectedItem = ext;
+                SaveSettings();
+            }
+            else MessageBox.Show("Already exists.", "Duplicate", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void addOutputExt_Click(object sender, EventArgs e)
+        {
+            var ext = Interaction.InputBox("New output extension (e.g. .pgmx):", "Add Output Ext", ".pgmx").Trim();
+            if (string.IsNullOrEmpty(ext)) return;
+            if (!ext.StartsWith(".")) ext = "." + ext;
+            if (!_settings.OutputExtensions.Contains(ext))
+            {
+                _settings.OutputExtensions.Add(ext);
+                cmbOutputExt.Items.Add(ext);
+                cmbOutputExt.SelectedItem = ext;
+                SaveSettings();
+            }
+            else MessageBox.Show("Already exists.", "Duplicate", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private bool ValidateRequiredSettings()
+        {
+            var ok = true;
+            if (string.IsNullOrWhiteSpace(_converterPath) || !File.Exists(_converterPath))
+            {
+                MessageBox.Show("Set path to XConverter.exe", "Missing Converter", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                setXConverterPath(); ok = false;
+            }
+            if (string.IsNullOrWhiteSpace(_rootDir) || !Directory.Exists(_rootDir))
+            {
+                MessageBox.Show("Set root folder for .xcs files", "Missing Root", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                setProgramPath(); ok = false;
+            }
+            if (!_toolTemplates.Any())
+            {
+                MessageBox.Show("Add at least one .tlgx template", "Missing Template", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                addTemplate_Click(null, null); ok = false;
+            }
+            RefreshTemplateList();
+            return ok;
+        }
+
+        private string GetSelectedTemplateLabel() => cmbTemplates.SelectedItem?.ToString() ?? string.Empty;
+        private string GetSelectedTemplatePath()
+            => _toolTemplates.TryGetValue(GetSelectedTemplateLabel(), out var p) ? p : string.Empty;
+
+        private string GetSelectedInputExt() => cmbInputExt.SelectedItem?.ToString() ?? ".xcs";
+        private string GetSelectedOutputExt() => cmbOutputExt.SelectedItem?.ToString() ?? ".pgmx";
+        private int GetSelectedMode() => int.TryParse(cmbMode.SelectedItem?.ToString(), out var m) ? m : 0;
 
         private async void btnRun_Click(object sender, EventArgs e)
         {
-            txtLog.Clear();
+            if (!ValidateRequiredSettings()) return;
 
-            string converter = _converterPath;
-            string root = _rootDir;
-            string label = cmbTemplates.SelectedItem?.ToString() ?? "";
-            string inputExt = cmbInputExt.SelectedItem?.ToString() ?? ".xcs";
-            string outputExt = cmbOutputExt.SelectedItem?.ToString() ?? ".pgmx";
-            int selectedMode = int.TryParse(cmbMode.SelectedItem?.ToString(), out int val) ? val : 0;
-
-            if (!_toolTemplates.TryGetValue(label, out string tpl))
+            var tplPath = GetSelectedTemplatePath();
+            if (string.IsNullOrEmpty(tplPath) || !File.Exists(tplPath))
             {
                 MessageBox.Show("Select a valid template.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            txtLog.AppendText($"[DEBUG] Converter: {converter}\r\n");
-            txtLog.AppendText($"[DEBUG] Root Dir:  {root}\r\n");
-            txtLog.AppendText($"[DEBUG] Template:  {label} ➔ {tpl}\r\n");
-            txtLog.AppendText($"[DEBUG] Extension: {inputExt} ➔ {outputExt}, Mode: {selectedMode}\r\n");
-            txtLog.AppendText($"[DEBUG] Generate .mixx: {genMixx.Checked}\r\n\r\n");
+            LogRunSettings(_converterPath, _rootDir, tplPath,
+                           GetSelectedInputExt(), GetSelectedOutputExt(),
+                           GetSelectedMode(), genMixx.Checked);
 
-            if (!File.Exists(converter) || !Directory.Exists(root) || !File.Exists(tpl))
-            {
-                MessageBox.Show("Invalid converter, root directory, or template file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            var dirGroups = Directory
-                .GetFiles(root, $"*{inputExt}", SearchOption.AllDirectories)
-                .GroupBy(Path.GetDirectoryName)
-                .Where(g => !string.IsNullOrEmpty(g.Key))
-                .ToList();
-
-            if (dirGroups.Count == 0)
-            {
-                txtLog.AppendText($"No {inputExt} files found under the root folder.\r\n");
-                return;
-            }
+            var groups = Directory.GetFiles(_rootDir, $"*{GetSelectedInputExt()}", SearchOption.AllDirectories)
+                                  .GroupBy(Path.GetDirectoryName)
+                                  .Where(g => !string.IsNullOrEmpty(g.Key));
 
             btnRun.Enabled = false;
-            int totalFiles = dirGroups.Sum(g => g.Count());
-            txtLog.AppendText($"Found {totalFiles} {inputExt} files in {dirGroups.Count} folders.\r\n");
+            foreach (var grp in groups)
+                await ProcessGroupAsync(grp.ToList(), grp.Key!, tplPath);
 
-            foreach (var group in dirGroups)
+            txtLog.AppendText("\r\nAll done!\r\n");
+            btnRun.Enabled = true;
+        }
+
+        private void LogRunSettings(string converter, string root, string tplPath,
+                                    string inputExt, string outputExt,
+                                    int mode, bool mixx)
+        {
+            txtLog.Clear();
+            txtLog.AppendText($"[DEBUG] Converter: {converter}\r\n");
+            txtLog.AppendText($"[DEBUG] Root Dir:  {root}\r\n");
+            txtLog.AppendText($"[DEBUG] Template: {tplPath}\r\n");
+            txtLog.AppendText($"[DEBUG] Extension: {inputExt} ➔ {outputExt}, Mode: {mode}\r\n");
+            txtLog.AppendText($"[DEBUG] Generate .mixx: {mixx}\r\n\r\n");
+        }
+
+        private async Task ProcessGroupAsync(List<string> files, string dir, string tplPath)
+        {
+            txtLog.AppendText($"\r\n--- Processing {dir} ({files.Count} files) ---\r\n");
+            await ConvertFilesAsync(files, tplPath);
+            if (genMixx.Checked)
             {
-                string dir = group.Key!;
-                var fileList = group.OrderBy(path => Path.GetFileNameWithoutExtension(path)).ToList();
+                var csv = WriteCsv(dir, files);
+                await GenerateMixxAsync(csv, tplPath);
+            }
+        }
 
-                txtLog.AppendText($"\r\n--- Processing folder: {dir} ({fileList.Count} files) ---\r\n");
-
-                foreach (var inputFile in fileList)
-                {
-                    string baseName = Path.GetFileNameWithoutExtension(inputFile);
-                    string outputFile = Path.Combine(dir, baseName + outputExt);
-
-                    var psi = new ProcessStartInfo
-                    {
-                        FileName = converter,
-                        Arguments = $"-s -ow -i \"{inputFile}\" -o \"{outputFile}\" -t \"{tpl}\" -m {selectedMode}",
-                        UseShellExecute = false,
-                        CreateNoWindow = true,
-                        RedirectStandardOutput = true,
-                        RedirectStandardError = true
-                    };
-
-                    txtLog.AppendText($" • Converting {baseName}{inputExt} → {baseName}{outputExt} … ");
-                    try
-                    {
-                        using var proc = Process.Start(psi);
-                        if (proc == null)
-                        {
-                            txtLog.AppendText("START FAILED\r\n");
-                            continue;
-                        }
-                        string stderr = await proc.StandardError.ReadToEndAsync();
-                        await proc.WaitForExitAsync();
-
-                        txtLog.AppendText(proc.ExitCode == 0
-                            ? "OK\r\n"
-                            : $"ERROR({proc.ExitCode})\r\n{stderr}\r\n");
-                    }
-                    catch (Exception ex)
-                    {
-                        txtLog.AppendText($"EXCEPTION: {ex.Message}\r\n");
-                    }
-                }
-
-                if (!genMixx.Checked) continue;
-
-                string csvPath = Path.Combine(dir, $"Mixx_{inputExt.Trim('.')}-{outputExt.Trim('.')}-MIXX.csv");
+        private async Task ConvertFilesAsync(List<string> inputs, string tpl)
+        {
+            var outExt = GetSelectedOutputExt();
+            var mode = GetSelectedMode();
+            foreach (var inp in inputs)
+            {
+                var name = Path.GetFileNameWithoutExtension(inp);
+                var outFile = Path.Combine(Path.GetDirectoryName(inp)!, name + outExt);
+                txtLog.AppendText($" • Converting {name}{GetSelectedInputExt()} → {name}{outExt} … ");
                 try
                 {
-                    if (File.Exists(csvPath))
-                        File.Delete(csvPath);
+                    var psi = new ProcessStartInfo(_converterPath,
+                        $"-s -ow -i \"{inp}\" -o \"{outFile}\" -t \"{tpl}\" -m {mode}")
+                    { UseShellExecute = false, CreateNoWindow = true, RedirectStandardError = true };
 
-                    using var writer = new StreamWriter(csvPath, false);
-                    foreach (var f in fileList)
-                    {
-                        string pgmxName = Path.GetFileNameWithoutExtension(f) + outputExt;
-                        writer.WriteLine($"[PRG]={pgmxName};");
-                    }
-                    txtLog.AppendText($"[DEBUG] Wrote CSV: {csvPath}\r\n");
-                }
-                catch (Exception ex)
-                {
-                    txtLog.AppendText($"CSV WRITE ERROR: {ex.Message}\r\n");
-                    continue;
-                }
-
-                string mixxPath = Path.Combine(dir, Path.GetFileNameWithoutExtension(csvPath) + ".mixx");
-                if (File.Exists(mixxPath))
-                    File.Delete(mixxPath);
-
-                var psi2 = new ProcessStartInfo
-                {
-                    FileName = converter,
-                    Arguments = $"-s -m 11 -i \"{csvPath}\" -t \"{tpl}\" -o \"{mixxPath}\"",
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true
-                };
-
-                txtLog.AppendText($" • Generating mixx → {Path.GetFileName(mixxPath)} … ");
-                try
-                {
-                    using var proc2 = Process.Start(psi2);
-                    if (proc2 == null)
-                    {
-                        txtLog.AppendText("START FAILED\r\n");
-                    }
-                    else
-                    {
-                        string stderr2 = await proc2.StandardError.ReadToEndAsync();
-                        await proc2.WaitForExitAsync();
-
-                        txtLog.AppendText(proc2.ExitCode == 0
-                            ? "OK\r\n"
-                            : $"ERROR({proc2.ExitCode})\r\n{stderr2}\r\n");
-                    }
+                    using var p = Process.Start(psi);
+                    if (p == null) { txtLog.AppendText("START FAILED\r\n"); continue; }
+                    var err = await p.StandardError.ReadToEndAsync();
+                    await p.WaitForExitAsync();
+                    txtLog.AppendText(p.ExitCode == 0 ? "OK\r\n" : $"ERROR({p.ExitCode})\r\n{err}\r\n");
                 }
                 catch (Exception ex)
                 {
                     txtLog.AppendText($"EXCEPTION: {ex.Message}\r\n");
                 }
             }
-
-            txtLog.AppendText("\r\nAll done!\r\n");
-            btnRun.Enabled = true;
         }
 
+        private string WriteCsv(string dir, List<string> files)
+        {
+            var csvName = $"Mixx_{GetSelectedInputExt().Trim('.')}–{GetSelectedOutputExt().Trim('.')}–MIXX.csv";
+            var path = Path.Combine(dir, csvName);
+            try
+            {
+                if (File.Exists(path)) File.Delete(path);
+                using var w = new StreamWriter(path);
+                foreach (var f in files)
+                    w.WriteLine($"[PRG]={Path.GetFileNameWithoutExtension(f)}{GetSelectedOutputExt()};");
+                txtLog.AppendText($"[DEBUG] CSV: {path}\r\n");
+            }
+            catch (Exception ex)
+            {
+                txtLog.AppendText($"CSV ERROR: {ex.Message}\r\n");
+            }
+            return path;
+        }
+
+        private async Task GenerateMixxAsync(string csvPath, string tpl)
+        {
+            var mixx = Path.ChangeExtension(csvPath, ".mixx");
+            txtLog.AppendText($" • Generating mixx → {Path.GetFileName(mixx)} … ");
+            try
+            {
+                if (File.Exists(mixx)) File.Delete(mixx);
+                var psi = new ProcessStartInfo(_converterPath,
+                    $"-s -m 11 -i \"{csvPath}\" -t \"{tpl}\" -o \"{mixx}\"")
+                { UseShellExecute = false, CreateNoWindow = true, RedirectStandardError = true };
+
+                using var p = Process.Start(psi);
+                if (p == null) { txtLog.AppendText("START FAILED\r\n"); return; }
+                var err = await p.StandardError.ReadToEndAsync();
+                await p.WaitForExitAsync();
+                txtLog.AppendText(p.ExitCode == 0 ? "OK\r\n" : $"ERROR({p.ExitCode})\r\n{err}\r\n");
+            }
+            catch (Exception ex)
+            {
+                txtLog.AppendText($"EXCEPTION: {ex.Message}\r\n");
+            }
+        }
+
+        private void showConversionSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+            => LogRunSettings(_converterPath, _rootDir, GetSelectedTemplatePath(),
+                             GetSelectedInputExt(), GetSelectedOutputExt(),
+                             GetSelectedMode(), genMixx.Checked);
     }
 }

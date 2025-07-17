@@ -48,6 +48,9 @@
             setXConv = new System.Windows.Forms.ToolStripMenuItem();
             setPrograms = new System.Windows.Forms.ToolStripMenuItem();
             addTemplate = new System.Windows.Forms.ToolStripMenuItem();
+            addInputExt = new System.Windows.Forms.ToolStripMenuItem();
+            addOutputExt = new System.Windows.Forms.ToolStripMenuItem();
+            showConversionSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             tableLayoutPanel2.SuspendLayout();
             groupBox1.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
@@ -234,7 +237,7 @@
             // 
             // settingsToolStripMenuItem
             // 
-            settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { setXConv, setPrograms, addTemplate });
+            settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { setXConv, setPrograms, addTemplate, addInputExt, addOutputExt, showConversionSettingsToolStripMenuItem });
             settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             settingsToolStripMenuItem.Text = "Settings";
@@ -259,6 +262,27 @@
             addTemplate.Size = new System.Drawing.Size(224, 22);
             addTemplate.Text = "Add Tooling Template";
             addTemplate.Click += addTemplate_Click;
+            // 
+            // addInputExt
+            // 
+            addInputExt.Name = "addInputExt";
+            addInputExt.Size = new System.Drawing.Size(224, 22);
+            addInputExt.Text = "Add Input Extension";
+            addInputExt.Click += addInputExt_Click;
+            // 
+            // addOutputExt
+            // 
+            addOutputExt.Name = "addOutputExt";
+            addOutputExt.Size = new System.Drawing.Size(224, 22);
+            addOutputExt.Text = "Add Output Extension";
+            addOutputExt.Click += addOutputExt_Click;
+            // 
+            // showConversionSettingsToolStripMenuItem
+            // 
+            showConversionSettingsToolStripMenuItem.Name = "showConversionSettingsToolStripMenuItem";
+            showConversionSettingsToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
+            showConversionSettingsToolStripMenuItem.Text = "Show Conversion Settings";
+            showConversionSettingsToolStripMenuItem.Click += showConversionSettingsToolStripMenuItem_Click;
             // 
             // Form1
             // 
@@ -305,6 +329,9 @@
         private System.Windows.Forms.ToolStripMenuItem setXConv;
         private System.Windows.Forms.ToolStripMenuItem setPrograms;
         private System.Windows.Forms.ToolStripMenuItem addTemplate;
+        private System.Windows.Forms.ToolStripMenuItem addInputExt;
+        private System.Windows.Forms.ToolStripMenuItem addOutputExt;
+        private System.Windows.Forms.ToolStripMenuItem showConversionSettingsToolStripMenuItem;
     }
 }
 
