@@ -6,26 +6,27 @@
 
 ## Features
 
-* Browse & set the path to **XConverter.exe**
-* Define multiple `.tlgx` tool templates with custom labels
-* Persist converter, root folder, and templates in `settings.json`
-* Recursively scan a root directory for `.xcs` files
-* Process each folder:
+- Browse & set the path to **XConverter.exe**
+- Define multiple `.tlgx` tool templates with custom labels
+- Persist converter, root folder, and templates in `settings.json`
+- Recursively scan a root directory for `.xcs` files
+- Process each folder:
 
   1. Convert all `.xcs` → `.pgmx`
   2. Generate `Mixx_XCS-PGMX-MIXX.csv` listing the `.pgmx` files
   3. Produce `Mixx_XCS-PGMX-MIXX.mixx` via `-m 11` mode
-* Overwrite existing CSV & MIX files on re-run
-* Detailed real-time logging in-app
-* Publish as a single, self-contained executable (no external deps)
+
+- Overwrite existing CSV & MIX files on re-run
+- Detailed real-time logging in-app
+- Publish as a single, self-contained executable (no external deps)
 
 ---
 
 ## Prerequisites
 
-* Windows 10 or above
-* .NET 8.0 runtime (bundled in single-file EXE)
-* Maestro by SCM Group (must be installed; includes `XConverter.exe` and its DLL dependencies)
+- Windows 10 or above
+- .NET 8.0 runtime (bundled in single-file EXE)
+- Maestro by SCM Group (must be installed; includes `XConverter.exe` and its DLL dependencies)
 
 ---
 
@@ -44,9 +45,10 @@
 3. In "Root Folder", browse to the parent directory containing folders with `.xcs` files.
 4. To add a tool template:
 
-   * In "Template Path", browse to a `.tlgx` file.
-   * Enter a label (e.g. `Pella_Impervia`).
-   * Click **Add Template**.
+   - In "Template Path", browse to a `.tlgx` file.
+   - Enter a label (e.g. `Pella_Impervia`).
+   - Click **Add Template**.
+
 5. Select the desired template from the list.
 6. These settings (converter path, root folder, templates) are saved in `settings.json` and reloaded automatically on next launch.
 
@@ -56,16 +58,17 @@
 
 1. Click **Browse...** next to each field to set:
 
-   * **Converter Path**: path to `XConverter.exe`
-   * **Root Folder**: base folder containing `.xcs` files
+   - **Converter Path**: path to `XConverter.exe`
+   - **Root Folder**: base folder containing `.xcs` files
+
 2. Add one or more `.tlgx` templates and select one.
 3. Click **RUN**.
 4. Monitor progress in the log pane.
 5. Each subfolder under the root will contain:
 
-   * `*.pgmx` files matching each `.xcs`
-   * `Mixx_XCS-PGMX-MIXX.csv`
-   * `Mixx_XCS-PGMX-MIXX.mixx`
+   - `*.pgmx` files matching each `.xcs`
+   - `Mixx_XCS-PGMX-MIXX.csv`
+   - `Mixx_XCS-PGMX-MIXX.mixx`
 
 ---
 
@@ -103,10 +106,12 @@ bin/Release/net8.0-windows/win-x64/publish/XCS2MIXX.exe
 
 ## Troubleshooting
 
-* **Windows Forms trimming warning**: Trimming is disabled in the project file.
-* **Missing converter or template**: Ensure paths are correct and files exist.
-* **No `.xcs` files found**: Verify your root folder structure.
-* Check the in-app log for detailed error messages.
+- **Windows Forms trimming warning**: Trimming is disabled in the project file.
+- **Missing converter or template**: Ensure paths are correct and files exist.
+- **No `.xcs` files found**: Verify your root folder structure.
+- Check the in-app log for detailed error messages.
+
+[XConverter Docs](https://www.scribd.com/document/407837280/Maestro-Scripting-Language-pdf)
 
 ---
 
