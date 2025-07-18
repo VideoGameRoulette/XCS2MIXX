@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
 
 namespace XCS2MIXX
 {
@@ -181,33 +182,6 @@ namespace XCS2MIXX
             SaveSettings();
             txtLog.Clear();
             txtLog.AppendText($"[DEBUG] Added template: {label} -> {path}\r\n");
-        }
-
-        // Optional extension management (not used when disabled)
-        private void addInputExt_Click(object sender, EventArgs e)
-        {
-            var input = Interaction.InputBox("New input ext (e.g. .xcs)", "Add Input Ext", ".xcs").Trim();
-            if (string.IsNullOrEmpty(input)) return;
-            if (!input.StartsWith(".")) input = "." + input;
-            if (!_settings.InputExtensions.Contains(input))
-            {
-                _settings.InputExtensions.Add(input);
-                SaveSettings();
-                InitializeUIFromSettings();
-            }
-        }
-
-        private void addOutputExt_Click(object sender, EventArgs e)
-        {
-            var input = Interaction.InputBox("New output ext (e.g. .pgmx)", "Add Output Ext", ".pgmx").Trim();
-            if (string.IsNullOrEmpty(input)) return;
-            if (!input.StartsWith(".")) input = "." + input;
-            if (!_settings.OutputExtensions.Contains(input))
-            {
-                _settings.OutputExtensions.Add(input);
-                SaveSettings();
-                InitializeUIFromSettings();
-            }
         }
 
         private bool ValidateRequiredSettings()
@@ -407,18 +381,12 @@ namespace XCS2MIXX
             {
                 int mode = int.TryParse(cmbMode.SelectedItem?.ToString(), out var m) ? m : 0;
                 var (inExt, outExt) = GetExtForMode(mode);
-                txtLog.AppendText($"[DEBUG] Converter: {_converterPath}");
-                txtLog.AppendText("\n");
-                txtLog.AppendText($"[DEBUG] Root Dir:  {_rootDir}");
-                txtLog.AppendText("\n");
-                txtLog.AppendText($"[DEBUG] Template:  {templ} -> {path}");
-                txtLog.AppendText("\n");
-                txtLog.AppendText($"[DEBUG] Mode:       {mode}");
-                txtLog.AppendText("\n");
-                txtLog.AppendText($"[DEBUG] Exts:       {inExt} -> {outExt}");
-                txtLog.AppendText("\n");
-                txtLog.AppendText($"[DEBUG] Mixx:       {genMixx.Checked}");
-                txtLog.AppendText("\n");
+                txtLog.AppendText($"[DEBUG] Converter: {_converterPath}\r\n");
+                txtLog.AppendText($"[DEBUG] Root Dir: {_rootDir}\r\n");
+                txtLog.AppendText($"[DEBUG] Template: {templ} -> {path}\r\n");
+                txtLog.AppendText($"[DEBUG] Mode: {mode}\r\n");
+                txtLog.AppendText($"[DEBUG] Exts: {inExt} -> {outExt}\r\n");
+                txtLog.AppendText($"[DEBUG] Mixx: {genMixx.Checked}\r\n\r\n");
             }
         }
     }

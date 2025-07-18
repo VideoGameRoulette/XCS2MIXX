@@ -49,8 +49,6 @@
             setXConv = new System.Windows.Forms.ToolStripMenuItem();
             setPrograms = new System.Windows.Forms.ToolStripMenuItem();
             addTemplate = new System.Windows.Forms.ToolStripMenuItem();
-            addInputExt = new System.Windows.Forms.ToolStripMenuItem();
-            addOutputExt = new System.Windows.Forms.ToolStripMenuItem();
             showConversionSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             tableLayoutPanel2.SuspendLayout();
             groupBox1.SuspendLayout();
@@ -79,7 +77,7 @@
             txtLog.Name = "txtLog";
             txtLog.ReadOnly = true;
             txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            txtLog.Size = new System.Drawing.Size(476, 395);
+            txtLog.Size = new System.Drawing.Size(476, 365);
             txtLog.TabIndex = 15;
             // 
             // tableLayoutPanel2
@@ -250,7 +248,7 @@
             // 
             // settingsToolStripMenuItem
             // 
-            settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { setXConv, setPrograms, addTemplate, addInputExt, addOutputExt, showConversionSettingsToolStripMenuItem });
+            settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { setXConv, setPrograms, addTemplate, showConversionSettingsToolStripMenuItem });
             settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             settingsToolStripMenuItem.Text = "Settings";
@@ -275,20 +273,6 @@
             addTemplate.Size = new System.Drawing.Size(224, 22);
             addTemplate.Text = "Add Tooling Template";
             addTemplate.Click += addTemplate_Click;
-            // 
-            // addInputExt
-            // 
-            addInputExt.Name = "addInputExt";
-            addInputExt.Size = new System.Drawing.Size(224, 22);
-            addInputExt.Text = "Add Input Extension";
-            addInputExt.Click += addInputExt_Click;
-            // 
-            // addOutputExt
-            // 
-            addOutputExt.Name = "addOutputExt";
-            addOutputExt.Size = new System.Drawing.Size(224, 22);
-            addOutputExt.Text = "Add Output Extension";
-            addOutputExt.Click += addOutputExt_Click;
             // 
             // showConversionSettingsToolStripMenuItem
             // 
@@ -342,8 +326,6 @@
         private System.Windows.Forms.ToolStripMenuItem setXConv;
         private System.Windows.Forms.ToolStripMenuItem setPrograms;
         private System.Windows.Forms.ToolStripMenuItem addTemplate;
-        private System.Windows.Forms.ToolStripMenuItem addInputExt;
-        private System.Windows.Forms.ToolStripMenuItem addOutputExt;
         private System.Windows.Forms.ToolStripMenuItem showConversionSettingsToolStripMenuItem;
         private System.Windows.Forms.Label helperText;
     }
