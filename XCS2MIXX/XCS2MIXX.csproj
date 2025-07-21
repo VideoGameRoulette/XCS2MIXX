@@ -11,7 +11,7 @@
     <SelfContained>true</SelfContained>
     <!-- Disable trimming for WinForms since it’s not supported -->
     <PublishTrimmed>false</PublishTrimmed>
-    <FileVersion>1.0.5</FileVersion>
+    <FileVersion>1.0.6</FileVersion>
     <RepositoryUrl>https://github.com/VideoGameRoulette/XCS2MIXX</RepositoryUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Copyright>©2025 Christopher Couture</Copyright>

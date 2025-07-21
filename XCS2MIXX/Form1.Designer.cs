@@ -44,6 +44,9 @@
             cmbTemplates = new System.Windows.Forms.ComboBox();
             genMixx = new System.Windows.Forms.CheckBox();
             helperText = new System.Windows.Forms.Label();
+            label5 = new System.Windows.Forms.Label();
+            programFolderTB = new System.Windows.Forms.TextBox();
+            setProgramFolderBtn = new System.Windows.Forms.Button();
             menuStrip1 = new System.Windows.Forms.MenuStrip();
             settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             setXConv = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,7 +63,7 @@
             // 
             tableLayoutPanel2.SetColumnSpan(btnRun, 3);
             btnRun.Dock = System.Windows.Forms.DockStyle.Fill;
-            btnRun.Location = new System.Drawing.Point(3, 139);
+            btnRun.Location = new System.Drawing.Point(3, 169);
             btnRun.Name = "btnRun";
             btnRun.Size = new System.Drawing.Size(478, 24);
             btnRun.TabIndex = 17;
@@ -71,7 +74,7 @@
             // 
             tableLayoutPanel2.SetColumnSpan(txtLog, 3);
             txtLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            txtLog.Location = new System.Drawing.Point(4, 169);
+            txtLog.Location = new System.Drawing.Point(4, 199);
             txtLog.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtLog.Multiline = true;
             txtLog.Name = "txtLog";
@@ -83,17 +86,20 @@
             // tableLayoutPanel2
             // 
             tableLayoutPanel2.ColumnCount = 3;
-            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
-            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
-            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             tableLayoutPanel2.Controls.Add(txtLog, 0, 6);
             tableLayoutPanel2.Controls.Add(btnRun, 0, 5);
             tableLayoutPanel2.Controls.Add(groupBox1, 0, 4);
+            tableLayoutPanel2.Controls.Add(label5, 0, 0);
+            tableLayoutPanel2.Controls.Add(programFolderTB, 1, 0);
+            tableLayoutPanel2.Controls.Add(setProgramFolderBtn, 2, 0);
             tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             tableLayoutPanel2.Location = new System.Drawing.Point(0, 24);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 7;
-            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 0F));
+            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 0F));
             tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 0F));
             tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 0F));
@@ -108,7 +114,7 @@
             tableLayoutPanel2.SetColumnSpan(groupBox1, 3);
             groupBox1.Controls.Add(tableLayoutPanel3);
             groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            groupBox1.Location = new System.Drawing.Point(3, 3);
+            groupBox1.Location = new System.Drawing.Point(3, 33);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new System.Drawing.Size(478, 130);
             groupBox1.TabIndex = 13;
@@ -237,6 +243,35 @@
             helperText.Size = new System.Drawing.Size(466, 28);
             helperText.TabIndex = 9;
             // 
+            // label5
+            // 
+            label5.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            label5.AutoSize = true;
+            label5.Location = new System.Drawing.Point(3, 7);
+            label5.Name = "label5";
+            label5.Size = new System.Drawing.Size(94, 15);
+            label5.TabIndex = 18;
+            label5.Text = "Programs Folder";
+            // 
+            // programFolderTB
+            // 
+            programFolderTB.Dock = System.Windows.Forms.DockStyle.Fill;
+            programFolderTB.Location = new System.Drawing.Point(103, 3);
+            programFolderTB.Name = "programFolderTB";
+            programFolderTB.Size = new System.Drawing.Size(278, 23);
+            programFolderTB.TabIndex = 19;
+            // 
+            // setProgramFolderBtn
+            // 
+            setProgramFolderBtn.Dock = System.Windows.Forms.DockStyle.Fill;
+            setProgramFolderBtn.Location = new System.Drawing.Point(387, 3);
+            setProgramFolderBtn.Name = "setProgramFolderBtn";
+            setProgramFolderBtn.Size = new System.Drawing.Size(94, 24);
+            setProgramFolderBtn.TabIndex = 20;
+            setProgramFolderBtn.Text = "Browse...";
+            setProgramFolderBtn.UseVisualStyleBackColor = true;
+            setProgramFolderBtn.Click += setProgramFolderBtn_Click;
+            // 
             // menuStrip1
             // 
             menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { settingsToolStripMenuItem });
@@ -328,6 +363,9 @@
         private System.Windows.Forms.ToolStripMenuItem addTemplate;
         private System.Windows.Forms.ToolStripMenuItem showConversionSettingsToolStripMenuItem;
         private System.Windows.Forms.Label helperText;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox programFolderTB;
+        private System.Windows.Forms.Button setProgramFolderBtn;
     }
 }
 

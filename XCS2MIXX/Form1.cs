@@ -50,6 +50,7 @@ namespace XCS2MIXX
                 {
                     _settings = s;
                     // restore templates
+
                     _toolTemplates.Clear();
                     foreach (var kv in _settings.ToolTemplates)
                         _toolTemplates[kv.Key] = kv.Value;
@@ -61,6 +62,7 @@ namespace XCS2MIXX
             }
             _converterPath = _settings.ConverterPath;
             _rootDir = _settings.RootDir;
+            
         }
 
         private void SaveSettings()
@@ -86,6 +88,7 @@ namespace XCS2MIXX
         private void InitializeUIFromSettings()
         {
             genMixx.Checked = _settings.GenerateMixx;
+            programFolderTB.Text = _settings.RootDir;
 
             // Templates
             cmbTemplates.Items.Clear();
@@ -138,7 +141,10 @@ namespace XCS2MIXX
             => SetPath(ref _converterPath, "XConverter.exe", "[DEBUG] Converter: ");
 
         private void setPrograms_Click(object sender, EventArgs e)
-            => SetPath(ref _rootDir, string.Empty, "[DEBUG] Root Dir: ", folder: true);
+        {
+            SetPath(ref _rootDir, string.Empty, "[DEBUG] Root Dir: ", folder: true);
+            programFolderTB.Text = _rootDir;
+        }
 
         private void SetPath(ref string target, string filter, string logPrefix, bool folder = false)
         {
@@ -388,6 +394,12 @@ namespace XCS2MIXX
                 txtLog.AppendText($"[DEBUG] Exts: {inExt} -> {outExt}\r\n");
                 txtLog.AppendText($"[DEBUG] Mixx: {genMixx.Checked}\r\n\r\n");
             }
+        }
+
+        private void setProgramFolderBtn_Click(object sender, EventArgs e)
+        {
+            SetPath(ref _rootDir, string.Empty, "[DEBUG] Root Dir: ", folder: true);
+            programFolderTB.Text = _rootDir;
         }
     }
 }
